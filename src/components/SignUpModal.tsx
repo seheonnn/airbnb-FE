@@ -1,22 +1,40 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react";
-import { FaUserNinja, FaLock } from "react-icons/fa"
+import { FaUserNinja, FaLock, FaEnvelope, FaUserSecret } from "react-icons/fa"
 import SocialLogin from "./SocialLogin";
 
-interface LoginModalProps{
+interface SignUpModalProps{
     isOpen:boolean;
     onClose:() => void;
 }
 
-export default function LoginModal ({ isOpen, onClose } :  LoginModalProps) {
+export default function SignUpModal({ isOpen, onClose } :  SignUpModalProps) {
     return (
         <Modal motionPreset="slideInBottom" onClose={onClose} isOpen={isOpen}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Log in</ModalHeader>
+                    <ModalHeader>Sign Up</ModalHeader>
                     <ModalCloseButton />
 
                     <ModalBody>
                         <VStack>
+
+                            <InputGroup>
+                            <InputLeftElement children={
+                                <Box color={"gray.500"}>
+                                    <FaUserSecret />
+                                </Box>
+                            } />
+                            <Input variant={"filled"} placeholder="Name" />
+                            </InputGroup>
+
+                            <InputGroup>
+                            <InputLeftElement children={
+                                <Box color={"gray.500"}>
+                                    <FaEnvelope />
+                                </Box>
+                            } />
+                            <Input variant={"filled"} placeholder="Email" />
+                            </InputGroup>
 
                             <InputGroup>
                             <InputLeftElement children={

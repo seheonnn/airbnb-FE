@@ -11,6 +11,7 @@ export default function Root(){
     </Box>
     );
 }
+// 작은 것부터 시작해서 크기를 키워 가며 파일로 분리함. Social Login 분리 -> Login modal 분리 -> header 분리
 
 
 // body {
