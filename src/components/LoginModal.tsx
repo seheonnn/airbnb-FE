@@ -7,7 +7,7 @@ interface LoginModalProps{
     onClose:() => void;
 }
 
-export default function LoginModal ({ isOpen, onClose } :  LoginModalProps) {
+export default function LoginModal({ isOpen, onClose } :  LoginModalProps) {
     return (
         <Modal motionPreset="slideInBottom" onClose={onClose} isOpen={isOpen}>
                 <ModalOverlay />

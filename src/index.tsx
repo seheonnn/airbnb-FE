@@ -1,8 +1,9 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
+import theme from './theme';
 
 // import './index.css';
 // import App from './App';
@@ -13,7 +14,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}> {/* 테마 확장 */}
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} /> {/* user가 이전에 다크모드였는지, 라이트모드였는지 확인 */}
       <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>
