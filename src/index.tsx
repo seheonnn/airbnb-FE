@@ -4,6 +4,10 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
 import theme from './theme';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
+const client = new QueryClient();
+
 
 // import './index.css';
 // import App from './App';
@@ -13,12 +17,14 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+<React.StrictMode>
+  <QueryClientProvider client={client}>
     <ChakraProvider theme={theme}> {/* 테마 확장 */}
     <ColorModeScript initialColorMode={theme.config.initialColorMode} /> {/* user가 이전에 다크모드였는지, 라이트모드였는지 확인 */}
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
     </ChakraProvider>
-  </React.StrictMode>
+  </QueryClientProvider>
+</React.StrictMode>
 );
 
 // // If you want to start measuring performance in your app, pass a function

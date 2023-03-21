@@ -1,4 +1,4 @@
-import { Box, Button, HStack, IconButton, LightMode, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, HStack, IconButton, LightMode, Stack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
@@ -8,9 +8,10 @@ export default function Header() {
     const{ isOpen:isSignUpOpen, onClose:onSignUpClose, onOpen:onSignUpOpen} = useDisclosure();
     const{ colorMode, toggleColorMode } = useColorMode();
     const logoColor = useColorModeValue("red.500", "red.200"); // 라이트모드일 때는 첫 번째 값, 다크모드일 때는 두 번째 값
-    const Icon = useColorModeValue(FaMoon, FaSun); // 컴포넌트에 직접 적용
+    const Icon = useColorModeValue(FaMoon, FaSun); // 컴포넌트에 직접 적용. 대문자로 시작
     return (
-        <HStack justifyContent={"space-between"} py={5} px={10} borderBottomWidth={1}>
+        // <HStack justifyContent={"space-between"} py={5} px={40} direction={{ sm:"column", md: "row", }} borderBottomWidth={1}> 내용물의 배치 방향이 바뀌는 경우 HStack, VStack 사용 X 그냥 Stack 사용할 것.
+        <Stack justifyContent={"space-between"} alignItems="center" py={5} px={40} direction={{ sm:"column", md: "row", }} spacing={{sm: 4, md: 0}} borderBottomWidth={1}>
             <Box color={logoColor}> {/*Airbnb logo는 chakra ui가 아니기 때문에 Box로 감싸서 변경. 아니면 색깔 코드로 변경해야 함*/}
                 <FaAirbnb size={"48"} />                  
             </Box>
@@ -30,6 +31,6 @@ export default function Header() {
             <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
             <SignUpModal isOpen={isSignUpOpen} onClose={onSignUpClose} />
 
-        </HStack>
+        </Stack>
     ); 
 }
