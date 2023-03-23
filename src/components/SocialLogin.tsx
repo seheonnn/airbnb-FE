@@ -11,8 +11,14 @@ export default function SocialLogin() {
             </HStack>
             
             <VStack>
-                <Button w="100%" leftIcon={<FaGithub />} colorScheme={"telegram"} >Continue with Github</Button>
-                <Button w="100%" leftIcon={<FaComment />} colorScheme={"yellow"} >Continue with Kakao</Button>
+                {/* chakra를 html tag로 변경 / scope에 원하는 정보를 추가적으로 요청할 수 있음*/}
+                <Button as="a" href="https://github.com/login/oauth/authorize?client_id=8c7475533617f2962128&scope=read:user,user:email" 
+                w="100%" leftIcon={<FaGithub />} >
+                    Continue with Github
+                </Button>
+                <Button w="100%" leftIcon={<FaComment />} colorScheme={"yellow"} >
+                    Continue with Kakao
+                </Button>
             </VStack>
         </Box>
     );
