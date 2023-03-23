@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./components/Root";
 import Home from "./routes/Home";
 import NotFound from "./routes/NotFound";
+import RoomDeatil from "./routes/RoomDetail";
 
 // <Router>
 //     <Route path="/">
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path:"",
                 element: <Home />,
+            },
+            {
+                path:"rooms/:roomPk",
+                element: <RoomDeatil />,
             }
         ]
     }
