@@ -42,9 +42,6 @@ export default function Home(){
     // useQuery가 로딩중인지 알려주고 해당 data가 준비 되었는지도 알려줌
     // const { isLoading, data } = useQuery<IRoom[]>(["rooms"], getRooms); // [] 안 내용은 fetch한 결과물을 기억하는 작업의 key로 사용 됨. unique 해야 함
     const { isLoading, data } = useQuery<IRoomList[]>(["rooms"], getRooms);
-    useEffect(() => {
-        console.log("hello");
-    }, []);
     return (
     <Grid mt={10} px={{base: 10, lg: 40}} columnGap={4} rowGap={8} 
     templateColumns={{

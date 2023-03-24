@@ -24,7 +24,7 @@ export default function Header() {
             position:"bottom-right"
         });
         await logOut();
-        queryClient.refetchQueries(["me"])
+        queryClient.refetchQueries(["me"]) // refetch할 때 header는 user 한 번 더 확인
         toast.update(toastId, {
         status: "success",
         title: "Done!",
