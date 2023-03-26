@@ -37,7 +37,7 @@ export default function LoginModal({ isOpen, onClose } :  LoginModalProps) {
     const { register, watch, handleSubmit, formState: {errors}, reset } = useForm<IForm>();
     // console.log(register("lalala"))
     // console.log(watch());
-    const toast = useToast()
+    const toast = useToast();
     const queryClient = useQueryClient();
     const mutation = useMutation
     // 없어도 됨

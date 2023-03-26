@@ -84,14 +84,17 @@ export const usernameLogIn = ({username, password}:IUsernameLoginVariables) => i
 // /users/log-in에서 response로 받을 수 있는 것 ok or errors
 
 export interface ISignUpVariables{
-    name:string;
-    email:string;
-    username:string;
-    password:string;
+    name: string;
+    email: string;
+    username: string;
+    password: string;
+    currency: string;
+    gender: string;
+    language: string;
 }
 
-export const signUp = ({name, email, username, password} : ISignUpVariables) => instance.post(`users/`,
-{name, email, username, password},
+export const signUp = ({name, email, username, password, currency, gender, language} : ISignUpVariables) => instance.post(`users/`,
+{name, email, username, password, currency, gender, language},
     {
         headers: {
             "X-CSRFToken": Cookie.get("csrftoken") || "",
