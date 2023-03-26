@@ -7,6 +7,13 @@ interface SignUpModalProps{
     onClose:() => void;
 }
 
+interface IForm {
+    name: string;
+    email: string;
+    username: string;
+    password: string;
+}
+
 export default function SignUpModal({ isOpen, onClose } :  SignUpModalProps) {
     return (
         <Modal motionPreset="slideInBottom" onClose={onClose} isOpen={isOpen}>

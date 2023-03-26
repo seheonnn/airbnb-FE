@@ -1,5 +1,6 @@
-import { Avatar, Box, Button, HStack, IconButton, LightMode, Menu, MenuButton, MenuItem, MenuList, Stack, useColorMode, useColorModeValue, useDisclosure, useToast } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
+import { Avatar, Box, Button, HStack, IconButton, LightMode, Menu, MenuButton, MenuItem, MenuList, Stack, ToastId, useColorMode, useColorModeValue, useDisclosure, useToast } from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import { logOut } from "../api";
 import useUser from "../lib/userUser";
@@ -15,21 +16,45 @@ export default function Header() {
     const Icon = useColorModeValue(FaMoon, FaSun); // 컴포넌트에 직접 적용. 대문자로 시작
     const toast = useToast();
     const queryClient = useQueryClient();
+    const toastId = useRef<ToastId>();
+    const mutation = useMutation(logOut, {
+        onMutate:() => {
+            toastId.current = toast({
+                title: "Login out...",
+                description: "sad to see you go ...",
+                status: "loading",
+                position:"bottom-right"
+            });
+        },
+        onSuccess:() => {
+            if(toastId.current) {
+                queryClient.refetchQueries(["me"]) // refetch할 때 header는 user 한 번 더 확인
+                toast.update(toastId.current, {
+                    status: "success",
+                    title: "Done!",
+                    description: "See you later",
+                }
+            );
+        }
+    }
+    });
+
     // BE : api/v1/users/log-out POST 요청임
     const onLogOut = async() => {
-        const toastId = toast({
-            title: "Login out...",
-            description: "sad to see you go ...",
-            status: "loading",
-            position:"bottom-right"
-        });
-        await logOut();
-        queryClient.refetchQueries(["me"]) // refetch할 때 header는 user 한 번 더 확인
-        toast.update(toastId, {
-        status: "success",
-        title: "Done!",
-        description: "See you later",
-    });
+        mutation.mutate();
+        // const toastId = toast({
+        //     title: "Login out...",
+        //     description: "sad to see you go ...",
+        //     status: "loading",
+        //     position:"bottom-right"
+        // });
+        // await logOut();
+    //     queryClient.refetchQueries(["me"]) // refetch할 때 header는 user 한 번 더 확인
+    //     toast.update(toastId, {
+    //     status: "success",
+    //     title: "Done!",
+    //     description: "See you later",
+    // });
     };
     return (
         // <HStack justifyContent={"space-between"} py={5} px={40} direction={{ sm:"column", md: "row", }} borderBottomWidth={1}> 내용물의 배치 방향이 바뀌는 경우 HStack, VStack 사용 X 그냥 Stack 사용할 것.
