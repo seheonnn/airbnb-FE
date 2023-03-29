@@ -2,6 +2,7 @@ import { Avatar, Box, Button, HStack, IconButton, LightMode, Menu, MenuButton, M
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { logOut } from "../api";
 import useUser from "../lib/userUser";
 import LoginModal from "./LoginModal";
@@ -60,7 +61,9 @@ export default function Header() {
         // <HStack justifyContent={"space-between"} py={5} px={40} direction={{ sm:"column", md: "row", }} borderBottomWidth={1}> 내용물의 배치 방향이 바뀌는 경우 HStack, VStack 사용 X 그냥 Stack 사용할 것.
         <Stack justifyContent={"space-between"} alignItems="center" py={5} px={40} direction={{ sm:"column", md: "row", }} spacing={{sm: 4, md: 0}} borderBottomWidth={1}>
             <Box color={logoColor}> {/*Airbnb logo는 chakra ui가 아니기 때문에 Box로 감싸서 변경. 아니면 색깔 코드로 변경해야 함*/}
-                <FaAirbnb size={"48"} />                  
+            <Link to={"/"}>
+            <FaAirbnb size={"48"} />                  
+            </Link>
             </Box>
             {/* 로고와 log in 버튼 사이 간격 */}
             <HStack spacing={2}>
@@ -82,6 +85,10 @@ export default function Header() {
                             <Avatar name={user?.name} src={user?.avatar} size={"md"} />
                             </MenuButton>
                             <MenuList>
+                                {user?.is_host ? 
+                                <Link to="/rooms/upload">
+                                <MenuItem>Upload room</MenuItem>
+                                </Link> : null}
                                 <MenuItem onClick={onLogOut}> Log out</MenuItem>
                             </MenuList>
                         </Menu>

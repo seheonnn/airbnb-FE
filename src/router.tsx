@@ -7,6 +7,8 @@ import Home from "./routes/Home";
 import KakaoConfirm from "./routes/KakaoConfirm";
 import NotFound from "./routes/NotFound";
 import RoomDeatil from "./routes/RoomDetail";
+import UploadPhotos from "./routes/UploadPhotos";
+import UploadRoom from "./routes/UploadRoom";
 
 // <Router>
 //     <Route path="/">
@@ -28,8 +30,16 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
+                path:"rooms/upload",
+                element: <UploadRoom />
+            },
+            {
                 path:"rooms/:roomPk",
                 element: <RoomDeatil />,
+            },
+            {
+                path:"rooms/:roomPk/photos",
+                element: <UploadPhotos />,
             },
             {
                 path:"social",
