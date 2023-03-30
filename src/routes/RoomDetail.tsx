@@ -1,20 +1,38 @@
 
-import { Avatar, Box, Container, Grid, GridItem, Heading, HStack, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Container, Grid, GridItem, Heading, HStack, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { getRoom, getRoomReviews} from "../api";
+import { checkBooking, getRoom, getRoomReviews} from "../api";
 import { IReview, IRoomDetail } from "../types";
+import { Helmet } from "react-helmet"
+
+import Calendar from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
+import { useEffect, useState } from "react";
 
 export default function RoomDeatil() {
     const { roomPk } = useParams(); 
     // const { isLoading, data } = useQuery([`room:${roomPk}`], getRoom);
     const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
     // console.log(data);
-    const {data:reviewsData, isLoading:isReviewsLoading} = useQuery<IReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews)
-
+    const { data:reviewsData, isLoading:isReviewsLoading } = useQuery<IReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews);
+    const [ dates, setDates ] = useState<Date[]>();
+    const { data: checkBookingData, isLoading:isCheckingBooking, refetch } = useQuery(["check", roomPk, dates], checkBooking, { cacheTime:0, enabled: dates !== undefined });
+    console.log(checkBookingData?.ok, isCheckingBooking)
+    // useEffect(() => {
+    //     if (dates) {
+    //         // api의 fetch func으로 옮김
+    //         // const [firstDate, secondDate] = dates;
+    //         // const [checkIn] = firstDate.toJSON().split("T");
+    //         // const [checkOut] = secondDate.toJSON().split("T");
+    //         // console.log(checkIn, checkOut)
+    //     }
+    // }, [dates]);
+    console.log(data, isCheckingBooking);
     return (
     <Box mt={10} px={{base: 10, lg: 40}}>
+        <Helmet><title>{data?data.name : "Loading..."}</title></Helmet>
         <Skeleton height={"43px"} width="50%" isLoaded={!isLoading}>
             <Heading>{data?.name}</Heading>
             <HStack>
@@ -40,7 +58,10 @@ export default function RoomDeatil() {
                 </Skeleton>
             </GridItem>))}
         </Grid>
-        <HStack width={"40%"} justifyContent={"space-between"} mt={10}>
+        <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg">
+        <Box>
+        {/* Host 정보 */}
+        <HStack justifyContent={"space-between"} mt={10}>
             <VStack alignItems={"flex-start"}>
                 <Skeleton isLoaded={!isLoading} height={"30px"}>
                     <Heading fontSize={"2xl"}> House hosted by {data?.owner.name}</Heading>
@@ -55,6 +76,7 @@ export default function RoomDeatil() {
             </VStack>
             <Avatar name={data?.owner.name} size={"xl"} src={data?.owner.avatar} />
         </HStack>
+        {/* Review */}
         <Box mt={10}>
             <Heading mb={5} fontSize={"2xl"}>
                 <HStack>
@@ -82,6 +104,21 @@ export default function RoomDeatil() {
                 </Grid>
             </Container>
         </Box>
+        </Box>
+        {/* Calendar */}
+            <Box pt={10}>
+                <Calendar 
+                goToRangeStartOnSelect
+                // onChange={setDates}
+                onChange={(value) => setDates(value as Date[] | undefined)}
+                // showDoubleView 한 번에 두 달씩 보여주기
+                prev2Label={null} next2Label={null} minDetail="month" maxDate={new Date(Date.now() + 60*60*24*7*4*6*1000)} minDate={new Date()} selectRange />
+                <Button disabled={!checkBookingData?.ok} isLoading={isCheckingBooking && dates !== undefined} my={5} w="100%" colorScheme={"red"}> 
+                Make booking
+                </Button>
+                {!isCheckingBooking && !checkBookingData?.ok ? <Text color={"red.500"}>Can't book on those dates, sorry</Text>:null}
+            </Box>
+        </Grid>
     </Box>
     );
 }
