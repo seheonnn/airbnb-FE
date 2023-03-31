@@ -187,3 +187,44 @@ export const checkBooking = ( {queryKey} : QueryFunctionContext<CheckBookingQuer
         .then((response) => response.data);
     }
 }
+
+export interface IModifyRoomVariables {
+    name: string;
+    country: string;
+    city: string;
+    price: number;
+    rooms: number;
+    toilets: number;
+    description: string;
+    address: string;
+    pet_friendly: boolean;
+    kind: string;
+    amenities: number[];
+    category: number;
+    roomPk: string;
+};
+
+export const modifyRoom = (variables: IModifyRoomVariables) => instance.put(`rooms/${variables.roomPk}`,
+variables, 
+    {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+    }
+).then((response) => response.data); // django 에서 room 생성 후 해당 room을 반환함.
+
+export interface IBookingVariables {
+    pk: string;
+    check_in: string;
+    check_out: string;
+    guests: number;
+}
+
+export const createBooking = (variables: IBookingVariables) => instance.post(`rooms/${variables.pk}/bookings`, 
+variables, 
+    {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+    }
+).then((response) => response.data)

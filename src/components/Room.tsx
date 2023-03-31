@@ -1,5 +1,5 @@
 import { Box, Button, Grid, HStack, Image, Text, useColorModeValue, VStack } from "@chakra-ui/react"
-import { FaCamera, FaRegHeart, FaStar } from "react-icons/fa"
+import { FaCamera, FaPencilAlt, FaRegHeart, FaStar } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom";
 
 interface IRoomProps {
@@ -19,18 +19,26 @@ export default function Room({pk, imageUrl, name, rating, city, country, price, 
     const onCagmeraClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault();
         navigate(`/rooms/${pk}/photos`)
-    }
+    };
+    const onPencilClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        navigate(`/rooms/${pk}/modify`)
+        window.location.reload();
+    };
     return (
         <Link to={`/rooms/${pk}`}>
             <VStack alignItems={"flex-start"}> {/* 사진들을 같은 크기로 배열 */}
             <Box position="relative" overflow={"hidden"} mb={3} rounded={"2xl"}> {/* 사진의 모서리를 둥글게 하는 Box */}
-            {imageUrl ? (<Image objectFit={"cover"} minH={280} src={imageUrl} />) : (<Box minH="280px" h="100%" w="100%" p={10} bg="green.400" />)}
+            {imageUrl !== undefined ? (<Image objectFit={"cover"} minH={280} src={imageUrl} />) : (<Box display={"flex"} minH="280px" h="100%" w="100%" p="20" backgroundColor={"gray.400"} > <Text fontSize={"20px"} as={"b"} color={"white"}>No Image</Text></Box>)}
         
             {/* 방식 1 */}
             {/* <Box cursor={"pointer"} position="absolute" top={5} right={5} color={"white"}>
             <FaRegHeart size={"20px"}/>
             </Box> */}
-        
+
+            <Button onClick={onPencilClick} variant={"unstyled"} position="absolute" top={0} left={5} color={"white"} >
+                {isOwner ? <FaPencilAlt size={"20px"}/> : null }
+            </Button>
             {/* 방식 2 */}
             <Button onClick={onCagmeraClick} variant={"unstyled"} position="absolute" top={0} right={0} color={"white"}>
                 {isOwner ? <FaCamera size={"20px"}/> : <FaRegHeart size={"20px"}/> }

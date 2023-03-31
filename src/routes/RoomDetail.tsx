@@ -1,17 +1,42 @@
 
-import { Avatar, Box, Button, Container, Grid, GridItem, Heading, HStack, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { Avatar, Box, Button, Container, FormControl, Grid, GridItem, Heading, HStack, Image, Input, InputGroup, InputRightAddon, Skeleton, Text, useToast, VStack } from "@chakra-ui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
-import { useParams } from "react-router-dom";
-import { checkBooking, getRoom, getRoomReviews} from "../api";
+import { useNavigate, useParams } from "react-router-dom";
+import { checkBooking, createBooking, getRoom, getRoomReviews} from "../api";
 import { IReview, IRoomDetail } from "../types";
 import { Helmet } from "react-helmet"
 
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { formatDate } from "../lib/utils";
+
+interface IBooking {
+    pk: string;
+    check_in: string;
+    check_out: string;
+    guests: number;
+}
 
 export default function RoomDeatil() {
+    // Room Booking
+    const { register, handleSubmit } = useForm<IBooking>();
+    const toast = useToast();
+    const navigate = useNavigate();
+    const mutation = useMutation (createBooking, {
+        onSuccess: () => {
+            toast({
+                status: "success",
+                title: "Successfully booked",
+                isClosable: true,
+            });
+            navigate("/");
+        },
+    });
+
+
     const { roomPk } = useParams(); 
     // const { isLoading, data } = useQuery([`room:${roomPk}`], getRoom);
     const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
@@ -20,6 +45,16 @@ export default function RoomDeatil() {
     const [ dates, setDates ] = useState<Date[]>();
     const { data: checkBookingData, isLoading:isCheckingBooking, refetch } = useQuery(["check", roomPk, dates], checkBooking, { cacheTime:0, enabled: dates !== undefined });
     console.log(checkBookingData?.ok, isCheckingBooking)
+
+    const onSubmit = (data: IBooking) => {
+        if (dates && roomPk) {
+            data["pk"] = roomPk
+            data["check_in"] = formatDate(dates[0])
+            data["check_out"] = formatDate(dates[1])
+            mutation.mutate(data);
+        }
+    }
+
     // useEffect(() => {
     //     if (dates) {
     //         // api의 fetch func으로 옮김
@@ -72,6 +107,7 @@ export default function RoomDeatil() {
                     <Text>•</Text>
                     <Text>{data?.rooms} room{data?.rooms === 1 ? "" : "s"}</Text>
                 </HStack>
+                <Text>{data?.pet_friendly ? <Text>Pet friendly</Text>: <Text color={"red.500"}>Pet unfriendly</Text>}</Text>
             </Skeleton>
             </VStack>
             <Avatar name={data?.owner.name} size={"xl"} src={data?.owner.avatar} />
@@ -106,14 +142,20 @@ export default function RoomDeatil() {
         </Box>
         </Box>
         {/* Calendar */}
-            <Box pt={10}>
+            <Box pt={10} as="form" onSubmit={handleSubmit(onSubmit)} border="none">
                 <Calendar 
                 goToRangeStartOnSelect
                 // onChange={setDates}
                 onChange={(value) => setDates(value as Date[] | undefined)}
                 // showDoubleView 한 번에 두 달씩 보여주기
                 prev2Label={null} next2Label={null} minDetail="month" maxDate={new Date(Date.now() + 60*60*24*7*4*6*1000)} minDate={new Date()} selectRange />
-                <Button disabled={!checkBookingData?.ok} isLoading={isCheckingBooking && dates !== undefined} my={5} w="100%" colorScheme={"red"}> 
+                <FormControl p={3} border={"1px solid gray"}>
+                    <InputGroup>
+                            <Input {...register("guests", { required: true })} defaultValue={1} required type="number" min={1} />
+                            <InputRightAddon />
+                        </InputGroup>
+                </FormControl>
+                <Button type="submit" disabled={!checkBookingData?.ok} isLoading={isCheckingBooking && dates !== undefined} my={5} w="100%" colorScheme={"red"}> 
                 Make booking
                 </Button>
                 {!isCheckingBooking && !checkBookingData?.ok ? <Text color={"red.500"}>Can't book on those dates, sorry</Text>:null}
