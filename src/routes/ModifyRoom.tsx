@@ -33,23 +33,25 @@ export default function ModifyRoom() {
     const toast = useToast();
     const navigate = useNavigate();
     const mutation = useMutation(modifyRoom, {
-        onSuccess:(data:IForm) => {
-            if(!mutation.isLoading) {
-                toast({
-                    status: "success",
-                    title: "Room successfully modified !",
-                    position: "bottom-right"
-                });
-                navigate(`/rooms/${data.roomPk}`);
-            }
+        onSuccess: (data: IForm) => {
+            toast({
+              status: "success",
+              title: "Room successfully modified!",
+              position: "bottom-right"
+            });
+            console.log(data.roomPk, roomPk)
+            navigate(`/rooms/${roomPk}`);
         },
-    });
+      });
+      
     const { data: roomInfo, isLoading: isRoomInfoLoading } = useQuery<IForm>(["roomInfo", roomPk], getRoom);
-    console.log()
     const { data: amenities, isLoading: isAmenitiesLoading } = useQuery<IAmenity[]>(["amenities"], getAmenities);
     const { data: categories, isLoading: isCategoriesLoading } = useQuery<ICategory[]>(["categories"], getCategories);
     const onSubmit = (data: IForm) => {
-        mutation.mutate(data)
+        if(roomPk){
+            data["roomPk"] = roomPk
+            mutation.mutate(data)
+        }
     };
     return (
         <Box mb={20}>

@@ -43,9 +43,9 @@ const router = createBrowserRouter([
                 element: <UploadPhotos />,
             },
             {
-                path:"rooms/:roomPk/modify",
+                path: "rooms/:roomPk/modify",
                 element: <ModifyRoom />,
-            },
+              },
             {
                 path:"social",
                 children: [

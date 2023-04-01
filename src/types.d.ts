@@ -68,3 +68,10 @@ export interface IRoomPhotoPhoto {
     language: string;
     currency: string;
   }
+
+  export interface IBooking {
+    pk: string;
+    check_in: string;
+    check_out: string;
+    guests: number;
+}

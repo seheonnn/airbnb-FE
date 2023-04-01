@@ -4,21 +4,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaStar } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { checkBooking, createBooking, getRoom, getRoomReviews} from "../api";
-import { IReview, IRoomDetail } from "../types";
+import { IBooking, IReview, IRoomDetail } from "../types";
 import { Helmet } from "react-helmet"
 
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatDate } from "../lib/utils";
-
-interface IBooking {
-    pk: string;
-    check_in: string;
-    check_out: string;
-    guests: number;
-}
 
 export default function RoomDeatil() {
     // Room Booking
