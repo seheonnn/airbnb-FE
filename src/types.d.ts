@@ -1,3 +1,5 @@
+import { StringLiteral } from "typescript";
+
 export interface IRoomPhotoPhoto {
     pk: string;
     file: string;
@@ -74,4 +76,15 @@ export interface IRoomPhotoPhoto {
     check_in: string;
     check_out: string;
     guests: number;
+}
+
+export interface IRoomBookings {
+  id: number;
+  room: IRoomList;
+  user: IRoomOwner;
+  kind: string;
+  check_in: string;
+  check_out: string;
+  guests: number;
+  canceled: boolean;
 }

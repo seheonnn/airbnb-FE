@@ -63,3 +63,5 @@ export default function Room({pk, imageUrl, name, rating, city, country, price, 
         </Link>
     );
 }
+
+

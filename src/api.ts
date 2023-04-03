@@ -228,3 +228,12 @@ variables,
         },
     }
 ).then((response) => response.data)
+
+export const getBookings = () => 
+instance.get("bookings/").then((response) => response.data);
+
+export const deleteBooking = (bookingPk: number) => instance.post(`bookings/${bookingPk}`, null, {
+    headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+    },
+}).then((response) => response.status);

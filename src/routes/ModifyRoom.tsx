@@ -39,7 +39,6 @@ export default function ModifyRoom() {
               title: "Room successfully modified!",
               position: "bottom-right"
             });
-            console.log(data.roomPk, roomPk)
             navigate(`/rooms/${roomPk}`);
         },
       });

@@ -1,8 +1,8 @@
 
-import { Avatar, Box, Button, Container, FormControl, Grid, GridItem, Heading, HStack, Image, Input, InputGroup, InputRightAddon, Skeleton, Text, useToast, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Container, FormControl, Grid, GridItem, Heading, HStack, Image, Input, InputGroup, InputRightAddon, Skeleton, Stack, Text, useToast, VStack } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { FaStar } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { FaAirbnb, FaStar } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { checkBooking, createBooking, getRoom, getRoomReviews} from "../api";
 import { IBooking, IReview, IRoomDetail } from "../types";
 import { Helmet } from "react-helmet"
@@ -33,11 +33,11 @@ export default function RoomDeatil() {
     const { roomPk } = useParams(); 
     // const { isLoading, data } = useQuery([`room:${roomPk}`], getRoom);
     const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
-    // console.log(data);
+    console.log(data);
     const { data:reviewsData, isLoading:isReviewsLoading } = useQuery<IReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews);
     const [ dates, setDates ] = useState<Date[]>();
     const { data: checkBookingData, isLoading:isCheckingBooking, refetch } = useQuery(["check", roomPk, dates], checkBooking, { cacheTime:0, enabled: dates !== undefined });
-    console.log(checkBookingData?.ok, isCheckingBooking)
+    // console.log(checkBookingData?.ok, isCheckingBooking)
 
     const onSubmit = (data: IBooking) => {
         if (dates && roomPk) {
@@ -47,6 +47,11 @@ export default function RoomDeatil() {
             mutation.mutate(data);
         }
     }
+    const onBookingsClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        navigate(`/rooms/${roomPk}/bookings`)
+        window.location.reload();
+    };
 
     // useEffect(() => {
     //     if (dates) {
@@ -61,12 +66,23 @@ export default function RoomDeatil() {
     return (
     <Box mt={10} px={{base: 10, lg: 40}}>
         <Helmet><title>{data?data.name : "Loading..."}</title></Helmet>
-        <Skeleton height={"43px"} width="50%" isLoaded={!isLoading}>
-            <Heading>{data?.name}</Heading>
-            <HStack>
-                <FaStar />
-                <Text>{data?.rating}</Text>
-            </HStack>
+        {/* Skeleton은 Box 크기에 영향 */}
+        <Skeleton height={"43px"} width="100%" isLoaded={!isLoading}>   
+        <HStack justifyContent={"space-between"}>
+            <Stack gap={"0"}>
+                <Heading>{data?.name}</Heading>
+                <HStack>
+                    <FaStar />
+                    <Text>{data?.rating}</Text>
+                </HStack>
+            </Stack>
+            {/* <Box>
+                <Button onClick={onBookingsClick} my={5} w="100%" colorScheme={"red"}>
+                    Bookings
+                </Button>
+            </Box> */}
+        </HStack>
+
         </Skeleton>
         <Grid rounded={"xl"} overflow={"hidden"} mt={8} gap={3} height="60vh" templateRows={"1fr 1fr"} templateColumns={"repeat(4, 1fr)"}>
             {/* {data?.photos.slice(0, 5).map((photo, index) => (        해당 방식으론 Skeleton 적용 불가*/}
