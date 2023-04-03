@@ -2,6 +2,7 @@
 
 import { createBrowserRouter } from "react-router-dom";
 import Root from "./components/Root";
+import Bookings from "./routes/Bookings";
 import GithubConfirm from "./routes/GithubConfirm";
 import Home from "./routes/Home";
 import KakaoConfirm from "./routes/KakaoConfirm";
@@ -51,10 +52,10 @@ const router = createBrowserRouter([
                 path: "rooms/:roomPk/modify",
                 element: <ModifyRoom />,
             },
-            // {
-            //     path: "rooms/:roomPk/bookings",
-            //     element: <Bookings />,
-            // },
+            {
+                path: "rooms/:roomPk/bookings",
+                element: <Bookings />,
+            },
             {
                 path:"social",
                 children: [

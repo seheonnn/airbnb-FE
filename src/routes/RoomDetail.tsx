@@ -12,10 +12,12 @@ import 'react-calendar/dist/Calendar.css';
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatDate } from "../lib/utils";
+import useUser from "../lib/userUser";
 
 export default function RoomDeatil() {
     // Room Booking
     const { register, handleSubmit } = useForm<IBooking>();
+    const { user, userLoading } =  useUser();
     const toast = useToast();
     const navigate = useNavigate();
     const mutation = useMutation (createBooking, {
@@ -33,7 +35,7 @@ export default function RoomDeatil() {
     const { roomPk } = useParams(); 
     // const { isLoading, data } = useQuery([`room:${roomPk}`], getRoom);
     const { isLoading, data } = useQuery<IRoomDetail>([`rooms`, roomPk], getRoom);
-    console.log(data);
+    // console.log(data);
     const { data:reviewsData, isLoading:isReviewsLoading } = useQuery<IReview[]>([`rooms`, roomPk, `reviews`], getRoomReviews);
     const [ dates, setDates ] = useState<Date[]>();
     const { data: checkBookingData, isLoading:isCheckingBooking, refetch } = useQuery(["check", roomPk, dates], checkBooking, { cacheTime:0, enabled: dates !== undefined });
@@ -62,7 +64,7 @@ export default function RoomDeatil() {
     //         // console.log(checkIn, checkOut)
     //     }
     // }, [dates]);
-    console.log(data, isCheckingBooking);
+    console.log(data?.owner.username === user?.username);
     return (
     <Box mt={10} px={{base: 10, lg: 40}}>
         <Helmet><title>{data?data.name : "Loading..."}</title></Helmet>
@@ -76,11 +78,11 @@ export default function RoomDeatil() {
                     <Text>{data?.rating}</Text>
                 </HStack>
             </Stack>
-            {/* <Box>
+            {data?.owner.username === user?.username ? <Box>
                 <Button onClick={onBookingsClick} my={5} w="100%" colorScheme={"red"}>
                     Bookings
                 </Button>
-            </Box> */}
+            </Box> : null}
         </HStack>
 
         </Skeleton>

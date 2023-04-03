@@ -79,7 +79,7 @@ export interface IRoomPhotoPhoto {
 }
 
 export interface IRoomBookings {
-  id: number;
+  pk: number;
   room: IRoomList;
   user: IRoomOwner;
   kind: string;

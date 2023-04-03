@@ -1,11 +1,11 @@
 import { Box, Button, Grid, GridItem, Text, useToast } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { deleteBooking, getBookings } from "../api";
+import { deleteBooking, getMyBookings } from "../api";
 import { IRoomBookings } from "../types";
 
 export default function MyBookings() {
-  const { data } = useQuery<IRoomBookings[]>(["bookings"], getBookings);
+  const { data } = useQuery<IRoomBookings[]>(["bookings"], getMyBookings);
   const toast = useToast();
   const queryClient = useQueryClient();
   const mutation = useMutation(deleteBooking, {
@@ -58,7 +58,7 @@ export default function MyBookings() {
       {/* skeleton */}
       {data?.map((booking) => (
         !booking.canceled && booking.kind === "room" ? <Grid
-        key={booking.id}
+        key={booking.pk}
         templateColumns={"5fr 2fr 2fr 2fr 2fr 2fr"}
         gap={3}
         w={"100%"}
@@ -91,7 +91,7 @@ export default function MyBookings() {
           >
             <Text>Available</Text>
             <Button
-              onClick={() => onClick(booking.id)}
+              onClick={() => onClick(booking.pk)}
               color={"red.500"}
               mt={2}
             >

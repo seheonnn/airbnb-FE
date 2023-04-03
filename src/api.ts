@@ -229,7 +229,7 @@ variables,
     }
 ).then((response) => response.data)
 
-export const getBookings = () => 
+export const getMyBookings = () => 
 instance.get("bookings/").then((response) => response.data);
 
 export const deleteBooking = (bookingPk: number) => instance.post(`bookings/${bookingPk}`, null, {
@@ -237,3 +237,8 @@ export const deleteBooking = (bookingPk: number) => instance.post(`bookings/${bo
         "X-CSRFToken": Cookie.get("csrftoken") || "",
     },
 }).then((response) => response.status);
+
+export const getRoomBookings = ({queryKey} : QueryFunctionContext) => {
+    const [_, roomPk] = queryKey;
+    return instance.get(`rooms/${roomPk}/bookings`).then((response) => response.data);
+};
