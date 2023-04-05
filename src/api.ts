@@ -242,3 +242,16 @@ export const getRoomBookings = ({queryKey} : QueryFunctionContext) => {
     const [_, roomPk] = queryKey;
     return instance.get(`rooms/${roomPk}/bookings`).then((response) => response.data);
 };
+
+export const wishlistToggle = (roomPk: number) => instance.put(`wishlists/1/rooms/${roomPk}`,
+null, 
+    {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+    }
+).then((response) => response.data);
+
+export const getWishlist = () => {
+    return instance.get(`wishlists/`).then((response) => response.data);
+};

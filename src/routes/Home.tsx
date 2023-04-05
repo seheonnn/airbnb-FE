@@ -4,9 +4,9 @@ import { FaRegHeart, FaStar } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import Room from "../components/Room";
 import RoomSkeleton from "../components/RoomSkeleton";
-import { getRooms } from "../api";
+import { getRooms, getWishlist } from "../api";
 import { Link } from "react-router-dom";
-import { IRoomList } from "../types";
+import { IRoomList, IWishlist } from "../types";
 
 // interface IPhoto {
 //     pk: number;
@@ -42,6 +42,7 @@ export default function Home(){
     // useQuery가 로딩중인지 알려주고 해당 data가 준비 되었는지도 알려줌
     // const { isLoading, data } = useQuery<IRoom[]>(["rooms"], getRooms); // [] 안 내용은 fetch한 결과물을 기억하는 작업의 key로 사용 됨. unique 해야 함
     const { isLoading, data } = useQuery<IRoomList[]>(["rooms"], getRooms);
+    console.log(data)
     return (
     <Grid mt={10} px={{base: 10, lg: 40}} columnGap={4} rowGap={8} 
     templateColumns={{
@@ -80,6 +81,8 @@ export default function Home(){
         city={room.city}
         country={room.country}
         price={room.price}
+        like={room.like}
+        // isWishlisted={ !wishlistLoading&&!!wishlist?.rooms && wishlist?.rooms.some((roomDetail) => roomDetail.pk === room.pk) }
         />
     ))}
 

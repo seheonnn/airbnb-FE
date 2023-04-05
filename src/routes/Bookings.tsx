@@ -40,7 +40,7 @@ export default function Bookings() {
                         <CardHeader mb={"-0.5"}>
                             <HStack justifyContent={"space-between"}>
                                 <Box>
-                                <Avatar>{booking.user.avatar}</Avatar>
+                                <Avatar name={booking.user.name} src={booking.user.avatar} size={"md"}/>
                                 <Text>{booking.user.username}</Text>
                                 </Box>
                                 <Button onClick={() => onClick(booking.pk)} my={5} colorScheme={"red"}>Cancel</Button>

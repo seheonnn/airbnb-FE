@@ -1,6 +1,10 @@
 import { Box, Button, Grid, HStack, Image, Text, useColorModeValue, VStack } from "@chakra-ui/react"
-import { FaCamera, FaPencilAlt, FaRegHeart, FaStar } from "react-icons/fa"
+import { useQuery } from "@tanstack/react-query";
+import { FaCamera, FaHeart, FaPencilAlt, FaRegHeart, FaStar } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom";
+import {  getWishlist, wishlistToggle } from "../api";
+import { IWishlist } from "../types";
+
 
 interface IRoomProps {
     imageUrl: string;
@@ -11,12 +15,13 @@ interface IRoomProps {
     price: number;
     pk: number;
     isOwner: boolean;
+    like: boolean;
 }
 
-export default function Room({pk, imageUrl, name, rating, city, country, price, isOwner} : IRoomProps) {
+export default function Room({pk, imageUrl, name, rating, city, country, price, isOwner, like} : IRoomProps) {
     const gray = useColorModeValue("gray.600", "gray.300")
     const navigate = useNavigate();
-    const onCagmeraClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    const onCameraClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault();
         navigate(`/rooms/${pk}/photos`)
     };
@@ -25,6 +30,12 @@ export default function Room({pk, imageUrl, name, rating, city, country, price, 
         navigate(`/rooms/${pk}/modify`)
         window.location.reload();
     };
+    const onHeartClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        wishlistToggle(pk)
+        window.location.reload();
+    };
+    
     return (
         <Link to={`/rooms/${pk}`}>
             <VStack alignItems={"flex-start"}> {/* 사진들을 같은 크기로 배열 */}
@@ -40,9 +51,14 @@ export default function Room({pk, imageUrl, name, rating, city, country, price, 
                 {isOwner ? <FaPencilAlt size={"20px"}/> : null }
             </Button>
             {/* 방식 2 */}
-            <Button onClick={onCagmeraClick} variant={"unstyled"} position="absolute" top={0} right={0} color={"white"}>
+            {/* <Button onClick={onCameraClick} variant={"unstyled"} position="absolute" top={0} right={0} color={"white"}>
                 {isOwner ? <FaCamera size={"20px"}/> : <FaRegHeart size={"20px"}/> }
+            </Button> */}
+            <Button onClick={isOwner ? onCameraClick : onHeartClick} variant={"unstyled"} position="absolute" top={0} right={0} color={"white"}>
+                {isOwner ? (<FaCamera size={"20px"} />) : like ? (<FaHeart size={"20px"} color={"red"} />) : (<FaRegHeart size={"20px"} />)}
             </Button>
+
+
             </Box>
             <Box>
                 <Grid gap={2} templateColumns={"6fr 1fr"}>

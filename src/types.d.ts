@@ -15,6 +15,7 @@ export interface IRoomPhotoPhoto {
     rating: number;
     is_owner: boolean;
     photos: IRoomPhotoPhoto[];
+    like: boolean;
   }
   
   export interface IRoomOwner {
@@ -87,4 +88,10 @@ export interface IRoomBookings {
   check_out: string;
   guests: number;
   canceled: boolean;
+}
+
+export interface IWishlist {
+  pk:number;
+  name:string;
+  rooms:IRoomList[];
 }
