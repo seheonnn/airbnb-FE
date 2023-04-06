@@ -33,9 +33,6 @@ export default function MyBookings() {
       <Text display={"block"} mb={8} as={"b"} fontSize={40}>
         My Bookings
       </Text>
-      <Box mb={4}>
-        <Text as={"b"}>총 1건</Text>
-      </Box>
       <Grid
         templateColumns={"5fr 2fr 2fr 2fr 2fr 2fr"}
         gap={3}
