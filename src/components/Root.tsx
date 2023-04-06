@@ -9,7 +9,7 @@ export default function Root(){
     <Box>
         <Header />
         <Outlet />
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
     </Box>
     );
 }
