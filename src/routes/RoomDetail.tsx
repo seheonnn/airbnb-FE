@@ -124,15 +124,16 @@ export default function RoomDeatil() {
             <Avatar name={data?.owner.name} size={"xl"} src={data?.owner.avatar} />
         </HStack>
         {/* Review */}
-        <Box mt={10}>
-            <Heading mb={5} fontSize={"2xl"}>
+        <Box mt={10} mb={10}>
+            <Stack>
+            <Heading mb={5} fontSize={"2xl"} >
                 <HStack>
                     <FaStar /> <Text>{data?.rating}</Text>
                     <Text>•</Text>
                     <Text>{reviewsData?.length} review{reviewsData?.length === 1 ? "":"s" }</Text>
                 </HStack>
             </Heading>
-            <Container mt={16} maxW="container.lg" marginX={"none"}>
+            <Container mt={16} maxW="container.lg" marginX={"none"} >
                 <Grid gap={10} templateColumns={"1fr 1fr"}>
                     {reviewsData?.map((review, index) => (<VStack alignItems={"flex-start"} key={index}>
                         <HStack>
@@ -150,6 +151,7 @@ export default function RoomDeatil() {
                     ))}
                 </Grid>
             </Container>
+            </Stack>
         </Box>
         </Box>
         {/* Calendar */}

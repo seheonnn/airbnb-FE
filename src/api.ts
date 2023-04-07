@@ -41,7 +41,7 @@ instance.post(`users/log-out`, null, {
     },
 })
 .then((response) => response.data);
-
+// ================================================================================
 export const githubLogIn = (code:string) => instance.post(`users/github`, 
     {code}, 
     {
@@ -60,6 +60,21 @@ export const kakaoLogIn = (code:string) => instance.post(`users/kakao`,
         },
     }
 ).then((response) => response.status);
+
+export interface naverLoginVariables {
+    code: string;
+    state: string | null;
+  }
+
+export const naverLogIn = ({ code, state }: naverLoginVariables) => instance.post(`users/naver`, 
+    {code, state}, 
+    {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+    }
+).then((response) => response.status);
+// ================================================================================
 
 export interface IUsernameLoginVariables{
     username: string;

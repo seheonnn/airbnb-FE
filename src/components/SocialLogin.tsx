@@ -1,5 +1,5 @@
 import { Box, Button, Divider, HStack, VStack, Text } from "@chakra-ui/react";
-import { FaComment, FaGithub } from "react-icons/fa";
+import { FaComment, FaGithub, FaLine } from "react-icons/fa";
 
 export default function SocialLogin() {
     // parameter 만듦
@@ -10,6 +10,28 @@ export default function SocialLogin() {
     };
     const params = new URLSearchParams(kakaoParams).toString();
     console.log(params);
+
+    // state(임의의 랜덤한 값) 값 생성. 
+    function generateRandomState() {
+        const length = 16; // 랜덤한 문자열의 길이
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // 사용 가능한 문자열
+        let result = "";
+        for (let i = 0; i < length; i++) {
+          result += charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+        return result;
+      }
+    const naverState = generateRandomState();      
+    const naverButtonClick = () => {
+        sessionStorage.setItem("nState", naverState);
+      };
+    const naverParams = {
+        client_id: "hiwpFOk3oOJCdd3c4g45",
+        response_type: "code",
+        redirect_uri: "http://127.0.0.1:3000/social/naver",
+        state: naverState,
+      };
+    const paramsN = new URLSearchParams(naverParams).toString();
     return (
         <Box mb={4}>
             <HStack my={8}>
@@ -26,6 +48,9 @@ export default function SocialLogin() {
                 </Button>
                 <Button as="a" href={`https://kauth.kakao.com/oauth/authorize?${params}`} w="100%" leftIcon={<FaComment />} colorScheme={"yellow"} >
                     Continue with Kakao
+                </Button>
+                <Button as="a" href={`https://nid.naver.com/oauth2.0/authorize?${paramsN}`} w="100%" leftIcon={<img src="https://img.shields.io/badge/NAVER-03C75A?style=flat&logo=NAVER&logoColor=FFFFFF" />} onClick={naverButtonClick} colorScheme={"green"} >
+                    Continue with Naver
                 </Button>
             </VStack>
         </Box>

@@ -50,7 +50,7 @@ export default function MyBookings() {
         <GridItem as={"b"}>Guests</GridItem>
         <GridItem as={"b"}>Check In</GridItem>
         <GridItem as={"b"}>Check Out</GridItem>
-        <GridItem as={"b"}>Available</GridItem>
+        <GridItem as={"b"}>Canceled</GridItem>
       </Grid>
       {/* skeleton */}
       {data?.map((booking) => (
@@ -86,11 +86,9 @@ export default function MyBookings() {
             color={"blue.500"}
             fontWeight={"400"}
           >
-            <Text>Available</Text>
             <Button
               onClick={() => onClick(booking.pk)}
               color={"red.500"}
-              mt={2}
             >
               Cancel
             </Button>

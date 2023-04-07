@@ -36,20 +36,24 @@ export default function Bookings() {
                 ) : (<>
                 {bookings?.map((booking) => (
                     !booking.canceled ?
-                    <Card margin={"10"} mb={"100"} width={"200%"}>
+                    <Card margin={"10"} mb={"100"} width={"100%"}>
                         <CardHeader mb={"-0.5"}>
                             <HStack justifyContent={"space-between"}>
                                 <Box>
-                                <Avatar name={booking.user.name} src={booking.user.avatar} size={"md"}/>
-                                <Text>{booking.user.username}</Text>
+                                  <VStack>
+                                  <Avatar name={booking.user.name} src={booking.user.avatar} size={"md"}/>
+                                  <Text style={{fontWeight: 'bold'}}>{booking.user.username}</Text>
+                                  </VStack>
                                 </Box>
                                 <Button onClick={() => onClick(booking.pk)} my={5} colorScheme={"red"}>Cancel</Button>
                                 </HStack>
                         </CardHeader>
                         <CardBody mt={"-5"}>
-                            <Text>check_in: {booking.check_in}</Text>
-                            <Text>check_out: {booking.check_out}</Text>
-                            <Text>guests: {booking.guests}</Text>
+                          <Box>
+                            <HStack><Text style={{fontWeight: 'bold'}}>check_in:</Text>  <Text>{booking.check_in}</Text></HStack>
+                            <HStack><Text style={{fontWeight: 'bold'}}>check_out:</Text>  <Text>{booking.check_out}</Text></HStack>
+                            <HStack><Text style={{fontWeight: 'bold'}}>guests:</Text>  <Text>{booking.guests}</Text></HStack>
+                          </Box>
                         </CardBody>
                     </Card> 
                     : null)

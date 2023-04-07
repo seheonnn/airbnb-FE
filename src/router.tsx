@@ -12,6 +12,7 @@ import NotFound from "./routes/NotFound";
 import RoomDeatil from "./routes/RoomDetail";
 import UploadPhotos from "./routes/UploadPhotos";
 import UploadRoom from "./routes/UploadRoom";
+import NaverConfirm from "./routes/NaverConfirm";
 
 // <Router>
 //     <Route path="/">
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
                     {
                         path:"kakao",
                         element:<KakaoConfirm />,
+                    },
+                    {
+                        path:"naver",
+                        element:<NaverConfirm />,
                     },
                 ]
             }
