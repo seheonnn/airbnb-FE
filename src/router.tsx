@@ -13,6 +13,7 @@ import RoomDeatil from "./routes/RoomDetail";
 import UploadPhotos from "./routes/UploadPhotos";
 import UploadRoom from "./routes/UploadRoom";
 import NaverConfirm from "./routes/NaverConfirm";
+import GoogleConfirm from "./routes/GoogleConfirm";
 
 // <Router>
 //     <Route path="/">
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
                     {
                         path:"naver",
                         element:<NaverConfirm />,
+                    },
+                    {
+                        path:"google",
+                        element:<GoogleConfirm />,
                     },
                 ]
             }

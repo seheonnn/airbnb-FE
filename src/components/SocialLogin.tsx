@@ -1,5 +1,5 @@
 import { Box, Button, Divider, HStack, VStack, Text } from "@chakra-ui/react";
-import { FaComment, FaGithub, FaLine } from "react-icons/fa";
+import { FaComment, FaGithub, FaGoogle, FaLine } from "react-icons/fa";
 
 export default function SocialLogin() {
     // parameter 만듦
@@ -32,6 +32,15 @@ export default function SocialLogin() {
         state: naverState,
       };
     const paramsN = new URLSearchParams(naverParams).toString();
+
+    const googleParams = {
+        client_id: "3059113919-q37i95okv7n48pagipjs3druguce3kl0.apps.googleusercontent.com",
+        response_type: "code",
+        redirect_uri: "http://127.0.0.1:3000/social/google",
+        scope: "email profile"
+      };
+    const paramsG = new URLSearchParams(googleParams).toString();
+
     return (
         <Box mb={4}>
             <HStack my={8}>
@@ -51,6 +60,9 @@ export default function SocialLogin() {
                 </Button>
                 <Button as="a" href={`https://nid.naver.com/oauth2.0/authorize?${paramsN}`} w="100%" leftIcon={<img src="https://img.shields.io/badge/NAVER-03C75A?style=flat&logo=NAVER&logoColor=FFFFFF" />} onClick={naverButtonClick} colorScheme={"green"} >
                     Continue with Naver
+                </Button>
+                <Button as="a" href={`https://accounts.google.com/o/oauth2/v2/auth?${paramsG}`} w="100%" leftIcon={<FaGoogle />} colorScheme={"blue"}>
+                    Continue with Google
                 </Button>
             </VStack>
         </Box>

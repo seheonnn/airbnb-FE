@@ -74,6 +74,15 @@ export const naverLogIn = ({ code, state }: naverLoginVariables) => instance.pos
         },
     }
 ).then((response) => response.status);
+
+export const googleLogIn = (code:string) => instance.post(`users/google`, 
+    {code}, 
+    {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+    }
+).then((response) => response.status);
 // ================================================================================
 
 export interface IUsernameLoginVariables{
